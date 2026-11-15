@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Console Calculator - project by Alishba Rizwan.">
+<title>Console Calculator | Alishba Rizwan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="../../index.html">Alishba<span>Rizwan</span></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle menu">
+    <label for="nav-toggle" class="nav-btn">Menu</label>
+    <nav class="nav" aria-label="Main">
+      <ul>
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../about.html">About</a></li>
+        <li><a href="../../work.html" aria-current="page">Work</a></li>
+        <li><a href="../../achievements.html">Achievements</a></li>
+        <li><a href="../../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <div class="page-title">
+    <a class="back" href="../../work.html">&larr; Back to Work</a>
+    <h1>Console Calculator</h1>
+    <p class="lead">A menu-driven calculator program that validates input and handles errors safely.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap grid two">
+    <div>
+      <h2>About the project</h2>
+      <p>This program lets the user add, subtract, multiply, divide, raise a number to a power and find a square root. It keeps running until the user chooses Exit.</p>
+      <p>The main goal was to practise functions, conditions, loops and input validation, and to make the program handle mistakes (like typing letters or dividing by zero) without crashing.</p>
+      <p class="meta"><span class="chip">Python</span><span class="chip">Functions</span><span class="chip">Loops</span><span class="chip">Error handling</span></p>
+      <div class="btn-row"><a class="btn" href="calculator.py" download>Download calculator.py</a></div>
+    </div>
+    <div class="card">
+      <h2>Features</h2>
+      <ul class="tick-list">
+        <li>Six operations from a numbered menu</li>
+        <li>Rejects invalid menu choices</li>
+        <li>Keeps asking until a valid number is typed</li>
+        <li>Shows a clear message for division by zero</li>
+        <li>Blocks the square root of negative numbers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Sample run</h2>
+    <pre class="code-block">=== Console Calculator ===
+1. Add
+2. Subtract
+3. Multiply
+4. Divide
+5. Power
+6. Square root
+0. Exit
+Choose an option (0-6): 1
+Enter the first number: 12.5
+Enter the second number: 7.5
+Result: 20
+
+=== Console Calculator ===
+1. Add
+2. Subtract
+3. Multiply
+4. Divide
+5. Power
+6. Square root
+0. Exit
+Choose an option (0-6): 4
+Enter the first number: 10
+Enter the second number: 0
+Error: Cannot divide by zero.
+
+=== Console Calculator ===
+1. Add
+2. Subtract
+3. Multiply
+4. Divide
+5. Power
+6. Square root
+0. Exit
+Choose an option (0-6): 5
+Enter the first number: 2
+Enter the second number: 10
+Result: 1024
+
+=== Console Calculator ===
+1. Add
+2. Subtract
+3. Multiply
+4. Divide
+5. Power
+6. Square root
+0. Exit
+Choose an option (0-6): 6
+Enter the first number: abc
+Invalid input. Please enter a number.
+Enter the first number: 144
+Result: 12
+
+... (menu repeats) ...
+
+Choose an option (0-6): 0
+Goodbye!</pre>
+    <h2>Source code</h2>
+    <pre class="code-block">&quot;&quot;&quot;Console Calculator - Alishba Rizwan
+A simple menu-driven calculator with input validation.&quot;&quot;&quot;
+
+import math
+
+
+def get_number(prompt):
+    &quot;&quot;&quot;Keep asking until the user types a valid number.&quot;&quot;&quot;
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print(&quot;Invalid input. Please enter a number.&quot;)
+
+
+def calculate(choice, a, b=None):
+    &quot;&quot;&quot;Return the result of the chosen operation.&quot;&quot;&quot;
+    if choice == &quot;1&quot;:
+        return a + b
+    if choice == &quot;2&quot;:
+        return a - b
+    if choice == &quot;3&quot;:
+        return a * b
+    if choice == &quot;4&quot;:
+        if b == 0:
+            raise ZeroDivisionError(&quot;Cannot divide by zero.&quot;)
+        return a / b
+    if choice == &quot;5&quot;:
+        return a ** b
+    if choice == &quot;6&quot;:
+        if a &lt; 0:
+            raise ValueError(&quot;Cannot take the square root of a negative number.&quot;)
+        return math.sqrt(a)
+
+
+def show_menu():
+    print(&quot;\n=== Console Calculator ===&quot;)
+    print(&quot;1. Add&quot;)
+    print(&quot;2. Subtract&quot;)
+    print(&quot;3. Multiply&quot;)
+    print(&quot;4. Divide&quot;)
+    print(&quot;5. Power&quot;)
+    print(&quot;6. Square root&quot;)
+    print(&quot;0. Exit&quot;)
+
+
+def main():
+    while True:
+        show_menu()
+        choice = input(&quot;Choose an option (0-6): &quot;).strip()
+
+        if choice == &quot;0&quot;:
+            print(&quot;Goodbye!&quot;)
+            break
+        if choice not in (&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;):
+            print(&quot;Invalid option. Please choose from 0 to 6.&quot;)
+            continue
+
+        a = get_number(&quot;Enter the first number: &quot;)
+        b = None
+        if choice != &quot;6&quot;:                      # square root needs one number only
+            b = get_number(&quot;Enter the second number: &quot;)
+
+        try:
+            result = calculate(choice, a, b)
+            print(f&quot;Result: {result:g}&quot;)
+        except (ZeroDivisionError, ValueError) as error:
+            print(f&quot;Error: {error}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</pre>
+    <p>To run it yourself, install Python, then type <code>python calculator.py</code> in a terminal opened in this folder.</p>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>&copy; 2026 Alishba Rizwan. Software Engineering, NED University of Engineering &amp; Technology.</p>
+    <p><a href="https://www.linkedin.com/">LinkedIn</a><a href="https://github.com/">GitHub</a><a href="mailto:yourname@example.com">Email</a></p>
+  </div>
+</footer>
+</body>
+</html>
